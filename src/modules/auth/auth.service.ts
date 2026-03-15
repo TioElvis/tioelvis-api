@@ -7,9 +7,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { SignInDto } from './dto/sign-in.dto';
+import { User, UserDocument } from './user.schema';
 
 import { MAX_COOKIE_AGE } from 'src/lib/constants';
-import { User, UserDocument } from 'src/modules/auth/user.schema';
 
 @Injectable()
 export class AuthService {
