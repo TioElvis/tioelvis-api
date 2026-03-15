@@ -9,7 +9,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
 
 import { MAX_COOKIE_AGE } from 'src/lib/constants';
-import { User, UserDocument } from 'src/modules/user/user.schema';
+import { User, UserDocument } from 'src/modules/auth/user.schema';
 
 @Injectable()
 export class AuthService {
