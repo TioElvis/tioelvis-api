@@ -1,6 +1,6 @@
 # 📌 Description
 
-I build projects in different programming languages, and the goal of this blog is to provided an API for the blog.
+I build projects in different programming languages, and the goal of this project is to provided an API for the blog.
 
 ---
 
