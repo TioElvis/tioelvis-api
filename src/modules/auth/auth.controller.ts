@@ -1,5 +1,14 @@
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
-import { Body, Controller, HttpCode, Post, Res } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
@@ -21,5 +30,12 @@ export class AuthController {
   @HttpCode(200)
   signOut(@Res({ passthrough: true }) response: FastifyReply) {
     return this.authService.signOut(response);
+  }
+
+  @Get('verify-jwt')
+  @HttpCode(200)
+  @UseGuards(AuthGuard('jwt'))
+  verifyJwt() {
+    return { message: 'JWT is valid' };
   }
 }
