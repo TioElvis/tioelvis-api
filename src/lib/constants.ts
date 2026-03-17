@@ -27,6 +27,8 @@ Return ONLY a valid JSON object (no markdown, no backticks) with the following s
   "project": {
     "title": "",
     "slug": "",
+    "description": "",
+    "tags": [],
     "content": "",
     "languages": [],
     "repositoryUrl": "",
@@ -55,6 +57,9 @@ Rules:
 - only nest when it genuinely improves clarity — flat structure is preferred by default
 - parent sections should have a brief intro in "content"; details go in child sections
 - sections should cover: Overview, Getting Started, Project Structure, Features, Usage, and any other relevant topics based on the project
+- Make a small description of the project in the "description" field, but the main documentation should be in the sections
+- If a section is too long, break it into multiple child sections with clear titles
+- Set some tags based on the project content, but keep it concise (3-5 tags max)
 
 Content quality rules:
 - Analyze the actual code — do not write generic placeholder documentation

@@ -29,6 +29,16 @@ export class CreateProjectDto {
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(10)
+  @MaxLength(500)
+  description: string;
+
+  @IsNotEmpty()
+  @IsString({ each: true })
+  tags: string[];
+
+  @IsNotEmpty()
+  @IsString()
   content: string; // Markdown content
 
   @IsNotEmpty()

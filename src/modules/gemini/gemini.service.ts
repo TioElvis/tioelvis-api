@@ -92,12 +92,7 @@ export class GeminiService implements OnModuleInit {
       };
 
       const { data: project } = await this.projectService.create({
-        title: parsed.project.title,
-        slug: parsed.project.slug,
-        content: parsed.project.content,
-        languages: parsed.project.languages,
-        repositoryUrl: parsed.project.repositoryUrl,
-        demoUrl: parsed.project.demoUrl,
+        ...parsed.project,
       });
 
       await this.save(parsed.sections, project._id);

@@ -23,6 +23,12 @@ export class Project {
   slug: string;
 
   @Prop({ type: String, required: true })
+  description: string;
+
+  @Prop({ type: Array, required: true })
+  tags: string[];
+
+  @Prop({ type: String, required: true })
   content: string; // Markdown content
 
   @Prop({ type: Array, required: true, enum: Languages })
