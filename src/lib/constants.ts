@@ -77,4 +77,6 @@ REQUIRED SECTIONS (Adapt based on repository content):
 - Project Structure (A brief ASCII tree of the main folders and what they do)
 - Features & Usage (How to use it, with code examples)
 - Scripts/Commands (Available package.json scripts or Make commands)
+
+DON'T MAKE A OVERVIEW SECTION BECAUSE THE OVERVIEW IS THE PROJECT DESCRIPTION. FOCUS ON THE OTHER SECTIONS TO PROVIDE DEEPER INSIGHTS INTO THE PROJECT.
 `;
