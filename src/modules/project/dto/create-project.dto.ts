@@ -47,7 +47,7 @@ export class CreateProjectDto {
 
   @IsOptional()
   @IsUrl({}, { message: 'Repository URL must be a valid URL' })
-  repositoryUrl?: string;
+  repositoryUrl: string;
 
   @IsOptional()
   @IsUrl({}, { message: 'Demo URL must be a valid URL' })

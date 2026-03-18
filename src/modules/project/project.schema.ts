@@ -34,8 +34,8 @@ export class Project {
   @Prop({ type: Array, required: true, enum: Languages })
   languages: Languages[];
 
-  @Prop({ type: String })
-  repositoryUrl?: string;
+  @Prop({ type: String, unique: true, required: true })
+  repositoryUrl: string;
 
   @Prop({ type: String })
   demoUrl?: string;

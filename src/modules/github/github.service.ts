@@ -1,15 +1,21 @@
+import { Model } from 'mongoose';
 import { Octokit } from '@octokit/rest';
 import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 
 import { IGNORED_PATHS } from 'src/lib/constants';
+import { Project, ProjectDocument } from '../project/project.schema';
 
 @Injectable()
 export class GithubService implements OnModuleInit {
   private owner: string;
   private octokit: Octokit;
 
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    @InjectModel(Project.name) private projectModel: Model<ProjectDocument>,
+  ) {}
 
   onModuleInit() {
     this.octokit = new Octokit({
@@ -20,15 +26,28 @@ export class GithubService implements OnModuleInit {
 
   async findAllRepos() {
     try {
-      const { data } = await this.octokit.repos.listForAuthenticatedUser();
+      const { data: repos } =
+        await this.octokit.repos.listForAuthenticatedUser();
+
+      const repoUrls = repos.map((repo) => repo.html_url);
+
+      const existingProjects = await this.projectModel
+        .find({ repositoryUrl: { $in: repoUrls } })
+        .select('repositoryUrl -_id')
+        .lean();
+
+      const publishedUrls = new Set(
+        existingProjects.map((p) => p.repositoryUrl),
+      );
 
       return {
         message: 'Repositories fetched successfully.',
-        data: data.map((repo) => ({
+        data: repos.map((repo) => ({
           name: repo.name,
           description: repo.description,
           owner: repo.owner.login,
           url: repo.html_url,
+          isPublished: publishedUrls.has(repo.html_url),
         })),
       };
     } catch (error) {
