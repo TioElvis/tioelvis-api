@@ -60,6 +60,7 @@ Rules:
 - Make a small description of the project in the "description" field, but the main documentation should be in the sections
 - If a section is too long, break it into multiple child sections with clear titles
 - Set some tags based on the project content, but keep it concise (3-5 tags max)
+- IMPORTANT: DO NOT include top-level headings (e.g., # Title or ## Title) inside the "content" markdown strings. The UI automatically renders the section "title" as the header. Only use ### or #### if you need internal structure inside a specific section.
 
 Content quality rules:
 - Analyze the actual code — do not write generic placeholder documentation
