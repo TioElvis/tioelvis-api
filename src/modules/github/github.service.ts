@@ -32,12 +32,15 @@ export class GithubService implements OnModuleInit {
       const repoUrls = repos.map((repo) => repo.html_url);
 
       const existingProjects = await this.projectModel
-        .find({ repositoryUrl: { $in: repoUrls } })
-        .select('repositoryUrl -_id')
-        .lean();
+        .find(
+          { repositoryUrl: { $in: repoUrls } },
+          { repositoryUrl: 1, _id: 1 },
+        )
+        .lean()
+        .exec();
 
-      const publishedUrls = new Set(
-        existingProjects.map((p) => p.repositoryUrl),
+      const projectsMap = new Map(
+        existingProjects.map((p) => [p.repositoryUrl, p._id]),
       );
 
       return {
@@ -47,7 +50,8 @@ export class GithubService implements OnModuleInit {
           description: repo.description,
           owner: repo.owner.login,
           url: repo.html_url,
-          isPublished: publishedUrls.has(repo.html_url),
+          isPublished: projectsMap.has(repo.html_url),
+          _id: projectsMap.get(repo.html_url),
         })),
       };
     } catch (error) {
