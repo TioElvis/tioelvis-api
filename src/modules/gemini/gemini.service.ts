@@ -40,35 +40,21 @@ export class GeminiService implements OnModuleInit {
     project: Types.ObjectId,
     parent?: Types.ObjectId,
   ) {
-    const saved = await Promise.all(
-      sections.map((section) =>
-        this.sectionService.create({
-          title: section.title,
-          slug: section.slug,
-          content: section.content,
-          projectId: project,
-          parentId: parent,
-        }),
-      ),
-    );
+    for (const section of sections) {
+      const { data } = await this.sectionService.create({
+        title: section.title,
+        slug: section.slug,
+        content: section.content,
+        projectId: project,
+        parentId: parent,
+      });
 
-    const nextLevel = saved
-      .map(({ data }, i) => {
-        const children = sections[i].sections;
-
-        if (children && children.length > 0) {
-          return this.save(children, project, data._id);
-        }
-
-        return null;
-      })
-      .filter((p): p is Promise<void> => p !== null);
-
-    if (nextLevel.length > 0) {
-      await Promise.all(nextLevel);
+      const children = section.sections;
+      if (children && children.length > 0) {
+        await this.save(children, project, data._id);
+      }
     }
   }
-
   async generateProject(name: string, additionalPrompt?: string) {
     const files = await this.githubService.findRepoFiles(name);
 
