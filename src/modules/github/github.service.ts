@@ -34,13 +34,16 @@ export class GithubService implements OnModuleInit {
       const existingProjects = await this.projectModel
         .find(
           { repositoryUrl: { $in: repoUrls } },
-          { repositoryUrl: 1, _id: 1 },
+          { repositoryUrl: 1, _id: 1, slug: 1 },
         )
         .lean()
         .exec();
 
       const projectsMap = new Map(
-        existingProjects.map((p) => [p.repositoryUrl, p._id]),
+        existingProjects.map((p) => [
+          p.repositoryUrl,
+          { _id: p._id, slug: p.slug },
+        ]),
       );
 
       return {
@@ -51,7 +54,8 @@ export class GithubService implements OnModuleInit {
           owner: repo.owner.login,
           url: repo.html_url,
           isPublished: projectsMap.has(repo.html_url),
-          _id: projectsMap.get(repo.html_url),
+          _id: projectsMap.get(repo.html_url)?._id,
+          slug: projectsMap.get(repo.html_url)?.slug,
         })),
       };
     } catch (error) {
