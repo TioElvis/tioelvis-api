@@ -46,7 +46,11 @@ export class ProjectService {
     const filter: Record<string, any> = {};
 
     if (query.slug) filter.slug = query.slug;
-    if (query.title) filter.title = query.title;
+
+    if (query.title) {
+      filter.title = { $regex: query.title, $options: 'i' };
+    }
+
     if (query.languages) filter.languages = { $in: query.languages };
 
     const page = Math.max(1, query.page ?? 1);
@@ -57,6 +61,7 @@ export class ProjectService {
       const [data, total] = await Promise.all([
         this.projectModel
           .find(filter, { sections: 0 })
+          .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit)
           .lean<Project[]>()
